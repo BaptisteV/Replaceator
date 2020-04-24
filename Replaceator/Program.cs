@@ -8,7 +8,7 @@ namespace Replaceator
     {
         private static IServiceProvider _serviceProvider;
         
-        private static async Task<int> Main(string[] args)
+        private static async Task Main(string[] args)
         {
             RegisterServices(args);
 
@@ -16,8 +16,6 @@ namespace Replaceator
             await service.Generate().ConfigureAwait(false);
 
             DisposeServices();
-
-            return 0;
         }
         
         private static void RegisterServices(string[] args)
@@ -32,8 +30,8 @@ namespace Replaceator
             collection.AddScoped<IReplaceatorOptions, ReplaceatorOptions>();
             _serviceProvider = collection.BuildServiceProvider();
         }
-        private static void DisposeServices()
 
+        private static void DisposeServices()
         {
             if (_serviceProvider == null)
             {
