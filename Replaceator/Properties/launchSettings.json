@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Replaceator": {
+      "commandName": "Project",
+      "commandLineArgs": "-t \"C:\\Users\\Bapt\\source\\repos\\Replaceator\\Replaceator\\template.txt\" -p \"<pattern>\" -r \"toto\" \"tata\" -e \"txt\""
+    }
+  }
+}
