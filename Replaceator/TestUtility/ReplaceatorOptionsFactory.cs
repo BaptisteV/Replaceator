@@ -47,15 +47,12 @@ namespace Replaceator.TestUtility
     public class AppendTextToASingleFileFromAListOfFiles : CreateTempFolderWithTemplateFile, ITestCaseOptions, IDisposable
     {        
         public ReplaceatorOptions Options { get; set; }
-        public List<string> inputFilesContent;
         public AppendTextToASingleFileFromAListOfFiles(string[] replaceWords)
         {
-            inputFilesContent = new List<string>();
             var outputFile = new FileInfo(Path.Combine(_tempFolder.Folder.FullName, "test"));
             using (File.CreateText(outputFile.FullName)) { }
             
             var contentFile1 = replaceWords[0];
-            inputFilesContent.Add(contentFile1);
             var inputFile1 = new FileInfo(Path.Combine(_tempFolder.Folder.FullName, "input1"));
             using (var writer = File.CreateText(inputFile1.FullName))
             {
@@ -63,7 +60,6 @@ namespace Replaceator.TestUtility
             }
 
             var contentFile2 = replaceWords[1];
-            inputFilesContent.Add(contentFile2);
             var inputFile2 = new FileInfo(Path.Combine(_tempFolder.Folder.FullName, "input2"));
             using (var writer = File.CreateText(inputFile2.FullName))
             {

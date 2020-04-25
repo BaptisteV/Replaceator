@@ -1,10 +1,57 @@
 ﻿# Replaceator
 
-One Paragraph of project description goes here
+Replaceator is a tool which goal is to automate some tedious copy pasting I had to do at my current job.
+I had a text file with a bunch if text in it (a SQL trigger), and I had to change two words in the file for 30 times.
+So I though I'd automate it. So I built this, and it took me way more time than 30 copy paste, but you know, it does more and it could be usefull later of for somebody else.
 
-## Getting Started
+```
+./Replaceator.exe --help
+```
+```
+Replaceator 1.0.0
+Copyright (C) 2020 Replaceator
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+  -t, --template     Required. Template file that contains the pattern word
+
+  -p, --pattern      Required. Pattern in template file to replace by replace words
+
+  -r, --replace      Required. Replace words that will be put in place of the pattern. It can also be a list of existing
+                     files. If you pass files, a replace word will be a line in these files
+
+  -e, --extension    Extension of the output file (defaults to 3 random characters)
+
+  -o, --output       Output for the replacement. The default is the current directory (usually exe's directory). It can
+                     point to
+                      - A directory     => A file with a random name will be generated for each replace word
+                      - A file  => The file will be erased and the content will become the content of the template file
+                      times the replace words (append mode)
+
+  --help             Display this help screen.
+
+  --version          Display version information.
+  ```
+
+## Exemple
+
+Let's say you want a personalized invite for your birthday to your 400 Facebook friends.
+You create the following template.txt file:
+Hello, you, <thenameoftheinvitee>, are invited to my birthday party (if you can afford an expensive and personalized gift for me of course).
+
+```
+./Replaceator.exe -t "template.txt" -p "<thenameoftheinvitee>" -e "txt" -r "John Doe" "Jon Skeet" ...
+```
+
+Alternatively you can use a friends.txt file containing the name of all your friends like that:
+
+```
+John Doe
+Jon Skeet
+```
+
+And use the following command:
+```
+./Replaceator.exe -t "template.txt" -p "<thenameoftheinvitee>" -e "txt" -r "friends.txt"
+```
 
 ## Running the tests
 
@@ -12,54 +59,8 @@ These instructions will get you a copy of the project up and running on your loc
 dotnet test
 ```
 
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
+## Publish to a portable executable
 
 ```
 dotnet publish -r win-x64 -c Release /p:PublishSingleFile=true
 ```
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
