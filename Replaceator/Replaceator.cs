@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Mail;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Replaceator
 {
     public interface IReplaceator
     {
-        public Task Generate();
+        public Task<IEnumerable<FileInfo>> Generate();
     }
     public class Replaceator : IReplaceator
     {
@@ -36,7 +34,10 @@ namespace Replaceator
             {
                 _outputWriter = new OutputWriter(new FileInfo(options.Output));
             }
-            _outputWriter.FileExtension = options.Extension;
+            if (!string.IsNullOrEmpty(options.Extension))
+            {
+                _outputWriter.FileExtension = options.Extension;
+            }
             var inputAreFiles = options.ReplaceWords.All(s => File.Exists(s));
             if (inputAreFiles)
             {
@@ -51,19 +52,16 @@ namespace Replaceator
 
         }
 
-        private async Task CreateOutputFile(string content)
+        private async Task<FileInfo> CreateOutputFile(string content)
         {
             var file = await _outputWriter.WriteAsync(content).ConfigureAwait(false);
             _logger.Log($"Created file {file.FullName}");
+            return file;
         }
 
-        public async Task Generate()
+        public async Task<IEnumerable<FileInfo>> Generate()
         {
-            // Read the template file and put it in a buffer
-            // Check that the pattern appears at least once in the templateFile
-            // For each generatorWords 
-            // // Replace patternToReplace from the buffer
-            // // Write the result to a file in destinationDirectory
+            var createdFiles = new List<FileInfo>();
             var templateFileContent = await File.ReadAllTextAsync(_templateFile.FullName);
 
             if (!templateFileContent.Contains(_patternToReplace))
@@ -73,8 +71,9 @@ namespace Replaceator
 
             foreach(var word in _inputReader.Words)
             {
-                await CreateOutputFile(templateFileContent.Replace(_patternToReplace, word));
+                createdFiles.Add(await CreateOutputFile(templateFileContent.Replace(_patternToReplace, word)));
             }
+            return createdFiles;
         }
     }
 }
